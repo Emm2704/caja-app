@@ -14,6 +14,7 @@
             margin-bottom: 60px; /* Height of the footer */
         }
         .footer {
+            
             position: absolute;
             bottom: 0;
             width: 100%;
