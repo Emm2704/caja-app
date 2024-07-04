@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Sale;
 use App\Models\Product;
+use App\Models\SaleDetail;
 
 class SaleController extends Controller
 {
@@ -24,7 +25,8 @@ class SaleController extends Controller
      */
     public function create()
     {
-        $products = Product::all();
+        //enviar los de stock mayor que 0
+        $products = Product::where('stock', '>', 0)->get();
         return view('sales.new', ['products' => $products]);
     }
 
@@ -52,6 +54,19 @@ class SaleController extends Controller
         $sale->total = $totalneto;
         $sale->save();
 
+        //guardar en el detalle
+        foreach ($request->products as $productRequest) {
+            $product = Product::find($productRequest['id']);
+            $saleDetail = new SaleDetail();
+            $saleDetail->sale_id = $sale->id;
+            $saleDetail->product_id = $product->id;
+            $saleDetail->cantidad = $productRequest['quantity'];
+            $saleDetail->precio = $product->precio;
+            $saleDetail->save();
+
+            $product->stock -= $productRequest['quantity'];
+            $product->save();
+        }
 
         $sales = Sale::all();
         return view('sales.index', ['sales'=>$sales]);
@@ -62,7 +77,8 @@ class SaleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $sale = Sale::with('details.product')->findOrFail($id);
+        return view('sales.show', ['sale' => $sale]);
     }
 
     /**
@@ -70,8 +86,8 @@ class SaleController extends Controller
      */
     public function edit(string $id)
     {
-        $sale = Sale::find($id);
-        $products = Product::all();
+        $sale = Sale::with('details.product')->findOrFail($id);
+        $products = Product::where('stock', '>', 0)->get();
         return view('sales.edit', ['sale' => $sale, 'products' => $products]);
     }
 
@@ -80,7 +96,44 @@ class SaleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $sale = Sale::findOrFail($id);
+
+        $sale->nombre = $request->nombre;
+        $sale->documento = $request->buyer_type === 'persona' ? $request->documento : null;
+        $sale->razon_social = $request->buyer_type === 'entidad' ? $request->razon_social : null;
+        $sale->nit = $request->buyer_type === 'entidad' ? $request->nit : null;
+
+        $total = 0;
+
+        foreach ($request->products as $productRequest) {
+            $product = Product::findOrFail($productRequest['id']);
+            $total += $product->precio * $productRequest['quantity'];
+        }
+
+        $totalWithIva = $total * 1.19;
+
+        $sale->total = $totalWithIva;
+        $sale->save();
+
+        // Eliminar los detalles antiguos
+        SaleDetail::where('sale_id', $sale->id)->delete();
+
+        // Crear los nuevos detalles de venta
+        foreach ($request->products as $index => $productRequest) {
+            $product = Product::findOrFail($productRequest['id']);
+            $saleDetail = new SaleDetail();
+            $saleDetail->sale_id = $sale->id;
+            $saleDetail->product_id = $product->id;
+            $saleDetail->cantidad = $productRequest['quantity'];
+            $saleDetail->precio = $product->precio;
+            $saleDetail->save();
+
+            $product->stock -= $productRequest['quantity'];
+            $product->save();
+        }
+
+        $sales = Sale::all();
+        return view('sales.index', ['sales' => $sales]);
     }
 
     /**

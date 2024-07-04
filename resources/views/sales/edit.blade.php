@@ -40,13 +40,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="customer_name">Nombre:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Ingrese nombre del cliente" value="{{ $sale->customer_name }}" required>
+                            <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Ingrese nombre del cliente" value="{{ $sale->nombre }}" required>
                         </div>
                     </div>
                     <div class="form-group" id="persona-fields" style="{{ $sale->nit ? 'display: none;' : '' }}">
                         <label class="control-label col-sm-2" for="customer_document">Número de Identificación:</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="customer_document" name="customer_document" placeholder="Ingrese número de identificación" value="{{ $sale->customer_document }}">
+                            <input type="text" class="form-control" id="customer_document" name="customer_document" placeholder="Ingrese número de identificación" value="{{ $sale->documento }}">
                         </div>
                     </div>
                     <div class="form-group" id="entidad-fields" style="{{ $sale->nit ? '' : 'display: none;' }}">

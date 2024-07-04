@@ -10,4 +10,9 @@ class Sale extends Model
     use HasFactory;
     protected $table = 'sales';
     protected $primaryKey = 'id';
+
+    public function details()
+    {
+        return $this->hasMany(SaleDetail::class);
+    }
 }
