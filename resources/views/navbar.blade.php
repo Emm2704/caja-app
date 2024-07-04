@@ -9,7 +9,7 @@
           <a class="nav-link" href="{{ route('products.index') }}">Productos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Departamentos</a>
+          <a class="nav-link" href="{{ route('sales.index') }}">Ventas</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Municipios</a>
