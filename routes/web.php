@@ -19,3 +19,5 @@ Route::resource('products', ProductController::class)->parameters([
 //sales routes
 
 Route::resource('sales', SaleController::class);
+
+Route::get('/sales/{id}/pdf', [SaleController::class, 'generatePDF'])->name('sales.pdf');

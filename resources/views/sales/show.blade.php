@@ -52,6 +52,7 @@
                 <h5>Total</h5>
                 <p><strong>Total (con IVA):</strong> {{ $sale->total }}$</p>
 
+                <a href="{{ route('sales.pdf', $sale->id) }}" class="btn btn-danger mt-3">Descargar PDF</a>
                 <a href="{{ route('sales.index') }}" class="btn btn-primary mt-3">Volver a la lista de ventas</a>
             </div>
         </div>

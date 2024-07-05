@@ -9,6 +9,8 @@ use App\Models\Sale;
 use App\Models\Product;
 use App\Models\SaleDetail;
 
+use PDF;
+
 class SaleController extends Controller
 {
     /**
@@ -146,5 +148,15 @@ class SaleController extends Controller
 
         $sales = Sale::all();
         return view('sales.index', ['sales'=>$sales]);
+    }
+
+    //para generar los PDF
+    public function generatePDF($id)
+    {
+        $sale = Sale::with('details.product')->findOrFail($id);
+
+        $pdf = PDF::loadView('sales.pdf', compact('sale'));
+        
+        return $pdf->download('factura_'.$sale->id.'.pdf');
     }
 }
