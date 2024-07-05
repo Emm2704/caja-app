@@ -11,12 +11,7 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ route('sales.index') }}">Ventas</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Municipios</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Paises</a>
-        </li>
+        
       </ul>
     </div>
   </nav>

@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Sale extends Model
 {
     use HasFactory;
-    protected $table = 'sales';
-    protected $primaryKey = 'id';
+
+    protected $fillable = ['customer_name', 'customer_document', 'razon_social', 'nit', 'total'];
 
     public function details()
     {

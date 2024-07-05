@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class SaleDetail extends Model
 {
     use HasFactory;
-    protected $table = 'sale_details';
-    protected $primaryKey = 'id';
+
+    protected $fillable = ['sale_id', 'product_id', 'quantity', 'price'];
 
     public function sale()
     {

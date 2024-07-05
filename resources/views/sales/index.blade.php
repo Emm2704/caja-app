@@ -47,7 +47,7 @@
                     <td>{{$sale->nit}}</td>
                     <td>{{$sale->total}}$</td>
                     <td>
-                        <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-success">Ver</a>
+                        <a href="{{ route('sales.show', $sale->id) }}" class="btn btn-success">Factura</a>
                         <a href="{{ route('sales.edit', $sale->id) }}" class="btn btn-primary">Editar</a>
                         <form action="{{ route('sales.destroy', $sale->id) }}" method="POST" style="display:inline-block" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta venta?');">
                             @method('delete')
